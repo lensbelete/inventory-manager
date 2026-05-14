@@ -23,6 +23,5 @@ export interface Transaction {
   productName: string;
   delta: number;
   quantityAfter: number;
-  performedByLabel: string;
   createdAt: string;
 }

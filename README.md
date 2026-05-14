@@ -17,7 +17,7 @@ Then press `i` for iOS simulator, `a` for Android emulator, or scan the QR code 
 
 ## What’s included
 
-- **Users** — register email + full name; optionally choose an “active user” so stock events show who acted.
+- **Users** — register email and full name (listed below the form after signup).
 - **Products** — register SKU, name, price, and initial quantity (SKU must be unique; validation on all fields).
 - **Stock** — add or remove quantity per product; removals are blocked if stock would go negative.
 - **Status** — each product shows SKU, quantity, and last updated time.
