@@ -125,7 +125,7 @@ export default function UsersScreen() {
           disabled={pending}
           className="items-center rounded-xl bg-cool-accent py-3.5 active:opacity-90 disabled:opacity-40">
           {pending ? (
-            <ActivityIndicator color="#0a0e14" />
+            <ActivityIndicator color="#d0dae6" />
           ) : (
             <Text className="text-base font-semibold text-cool-deep">Register</Text>
           )}
