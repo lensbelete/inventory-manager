@@ -1,98 +1,121 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { useInventory } from '@/context/inventory-context';
 
-export default function HomeScreen() {
+export default function UsersScreen() {
+  const { users, selectedUserId, setSelectedUserId, registerUser, pending } = useInventory();
+  const [email, setEmail] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 2400);
+    return () => clearTimeout(t);
+  }, [toast]);
+
+  async function onSubmit() {
+    setError(null);
+    const res = await registerUser(email, fullName);
+    if (!res.ok) {
+      setError(res.error);
+      return;
+    }
+    setEmail('');
+    setFullName('');
+    setToast('User registered.');
+  }
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <SafeAreaView className="flex-1 bg-slate-950" edges={['top', 'left', 'right']}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        className="flex-1">
+        <ScrollView
+          className="flex-1 px-4"
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ paddingBottom: 24 }}>
+          <Text className="pt-2 text-2xl font-semibold text-slate-100">Users</Text>
+          <Text className="mt-1 text-sm text-slate-400">
+            Register people who can be attributed on stock changes. Select an active user for the next actions.
+          </Text>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+          <View className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/80 p-4">
+            <Text className="mb-3 text-xs font-medium uppercase tracking-wide text-slate-500">Register</Text>
+            <Text className="mb-1 text-xs text-slate-400">Email</Text>
+            <TextInput
+              className="mb-3 rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-base text-slate-100"
+              placeholder="you@example.com"
+              placeholderTextColor="#64748b"
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
+              editable={!pending}
+            />
+            <Text className="mb-1 text-xs text-slate-400">Full name</Text>
+            <TextInput
+              className="mb-4 rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-base text-slate-100"
+              placeholder="Ada Lovelace"
+              placeholderTextColor="#64748b"
+              value={fullName}
+              onChangeText={setFullName}
+              editable={!pending}
+            />
+            {error ? (
+              <Text className="mb-3 text-sm text-red-400" accessibilityRole="alert">
+                {error}
+              </Text>
+            ) : null}
+            {toast ? <Text className="mb-3 text-sm text-emerald-400">{toast}</Text> : null}
+            <Pressable
+              onPress={onSubmit}
+              disabled={pending}
+              className="flex-row items-center justify-center rounded-xl bg-cyan-600 py-3 active:opacity-80 disabled:opacity-40">
+              {pending ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text className="text-center text-base font-semibold text-white">Register user</Text>
+              )}
+            </Pressable>
+          </View>
+
+          <Text className="mb-2 mt-8 text-xs font-medium uppercase tracking-wide text-slate-500">
+            Active user (for audit trail)
+          </Text>
+          <Pressable
+            onPress={() => setSelectedUserId(null)}
+            className={`mb-2 rounded-xl border px-3 py-3 ${selectedUserId === null ? 'border-cyan-500 bg-cyan-950/40' : 'border-slate-800 bg-slate-900/60'}`}>
+            <Text className="text-slate-100">No user selected</Text>
+            <Text className="text-xs text-slate-500">Actions show “—” as actor</Text>
+          </Pressable>
+          {users.map((u) => (
+            <Pressable
+              key={u.id}
+              onPress={() => setSelectedUserId(u.id)}
+              className={`mb-2 rounded-xl border px-3 py-3 ${selectedUserId === u.id ? 'border-cyan-500 bg-cyan-950/40' : 'border-slate-800 bg-slate-900/60'}`}>
+              <Text className="font-medium text-slate-100">{u.fullName}</Text>
+              <Text className="text-sm text-slate-400">{u.email}</Text>
+            </Pressable>
+          ))}
+          {users.length === 0 ? (
+            <Text className="text-sm text-slate-500">No users yet — add one above.</Text>
+          ) : null}
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
