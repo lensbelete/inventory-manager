@@ -7,7 +7,7 @@ import 'react-native-reanimated';
 import '../global.css';
 
 export const unstable_settings = {
-  anchor: '(drawer)',
+  anchor: '(tabs)',
 };
 
 const navigationTheme = {
@@ -27,7 +27,7 @@ export default function RootLayout() {
     <InventoryProvider>
       <ThemeProvider value={navigationTheme}>
         <Stack>
-          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
         <StatusBar style="light" />
       </ThemeProvider>
