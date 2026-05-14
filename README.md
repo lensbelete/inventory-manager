@@ -4,6 +4,16 @@ Small React Native demo that simulates **user registration**, **product catalog*
 
 **Repository:** [https://github.com/lensbelete/inventory-manager](https://github.com/lensbelete/inventory-manager)
 
+## Screenshots
+
+| | |
+|:---:|:---:|
+| ![](assets/screenshots/img1.jpg) | ![](assets/screenshots/img2.jpg) |
+| ![](assets/screenshots/img3.jpg) | ![](assets/screenshots/img4.jpg) |
+
+| ![](assets/screenshots/img5.jpg) |
+|:---:|
+
 ## Setup
 
 Requirements: Node.js (LTS recommended) and npm.
@@ -17,7 +27,7 @@ Then press `i` for iOS simulator, `a` for Android emulator, or scan the QR code 
 
 ## What’s included
 
-- **Navigation** — left **drawer** (sidebar) for Users, Products, and History; **modals** for registering users/products and adjusting stock.
+- **Navigation** — bottom **tabs** for Users, Products, and History; **modals** for registering users/products and adjusting stock.
 - **Users** — register email and full name (listed after signup).
 - **Products** — register SKU, name, price, and initial quantity (SKU must be unique; validation on all fields).
 - **Stock** — add or remove quantity per product; removals are blocked if stock would go negative.

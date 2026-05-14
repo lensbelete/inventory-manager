@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import type { ReactNode } from 'react';
 import {
   KeyboardAvoidingView,
@@ -10,6 +11,8 @@ import {
   View,
 } from 'react-native';
 
+import { hapticLight } from '@/utils/haptics';
+
 type FormModalProps = {
   visible: boolean;
   title: string;
@@ -18,28 +21,40 @@ type FormModalProps = {
 };
 
 export function FormModal({ visible, title, onClose, children }: FormModalProps) {
+  function close() {
+    hapticLight();
+    onClose();
+  }
+
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={close}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        className="flex-1 justify-center">
-        <View className="flex-1 justify-center bg-cool-deep/70 px-4">
-          <Pressable className="absolute inset-0" onPress={onClose} accessibilityRole="button" />
-          <View className="z-10 max-h-[88%] w-full max-w-[420px] self-center rounded-2xl border border-cool-border bg-cool-elevated">
-            <View className="flex-row items-center justify-between border-b border-cool-border px-4 py-3.5">
-              <Text className="flex-1 pr-2 text-lg font-semibold text-cool">{title}</Text>
+        className="flex-1 justify-end">
+        <View className="flex-1 justify-end bg-cool-deep/80 px-3 pb-6 pt-10">
+          <Pressable className="absolute inset-0" onPress={close} accessibilityRole="button" />
+          <View className="z-10 max-h-[90%] w-full max-w-[420px] self-center overflow-hidden rounded-3xl border border-cool-border/90 bg-cool-elevated">
+            <LinearGradient
+              colors={['#5eeefa', '#41d9ec']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={{ height: 3, width: '100%' }}
+            />
+            <View className="flex-row items-start justify-between border-b border-cool-border/90 bg-cool-elevated/95 px-4 pb-4 pt-4">
+              <Text className="flex-1 pr-4 text-xl font-bold tracking-tight text-cool">{title}</Text>
               <Pressable
-                onPress={onClose}
+                onPress={close}
                 hitSlop={12}
                 accessibilityRole="button"
-                accessibilityLabel="Close">
-                <Ionicons name="close" size={26} color="#7d8fa3" />
+                accessibilityLabel="Close"
+                className="rounded-full bg-cool-bg/90 p-1.5 active:opacity-80">
+                <Ionicons name="close" size={22} color="#aabdc8" />
               </Pressable>
             </View>
             <ScrollView
               keyboardShouldPersistTaps="handled"
-              className="px-4 py-4"
-              contentContainerStyle={{ paddingBottom: 20 }}>
+              className="bg-cool-elevated px-4 pt-5"
+              contentContainerStyle={{ paddingBottom: 26 }}>
               {children}
             </ScrollView>
           </View>

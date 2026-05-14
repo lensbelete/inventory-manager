@@ -53,8 +53,9 @@ export default function TabLayout() {
         },
         headerTintColor: '#e8eef4',
         headerTitleStyle: {
-          fontWeight: '600',
-          fontSize: 18,
+          fontWeight: '700',
+          fontSize: 19,
+          letterSpacing: -0.35,
         },
         headerShadowVisible: false,
         tabBarHideOnKeyboard: true,
