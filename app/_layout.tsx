@@ -14,11 +14,12 @@ const navigationTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    background: '#0a0e14',
-    card: '#121a24',
-    text: '#d0dae6',
-    border: '#243140',
-    primary: '#6b8496',
+    background: '#2c3d4a',
+    card: '#3d5161',
+    text: '#e8eef4',
+    border: '#5f778a',
+    primary: '#41d9ec',
+    notification: '#c4b4ff',
   },
 };
 
