@@ -17,7 +17,8 @@ Then press `i` for iOS simulator, `a` for Android emulator, or scan the QR code 
 
 ## What’s included
 
-- **Users** — register email and full name (listed below the form after signup).
+- **Navigation** — left **drawer** (sidebar) for Users, Products, and History; **modals** for registering users/products and adjusting stock.
+- **Users** — register email and full name (listed after signup).
 - **Products** — register SKU, name, price, and initial quantity (SKU must be unique; validation on all fields).
 - **Stock** — add or remove quantity per product; removals are blocked if stock would go negative.
 - **Status** — each product shows SKU, quantity, and last updated time.
@@ -27,9 +28,9 @@ Mutations use a short artificial delay to mimic async API calls while staying en
 
 ## Approach and trade-offs
 
-- **State:** A single `InventoryProvider` holds React state (`useState`) for users, products, and transactions. A `useRef` mirror of the user list avoids stale closures when labeling the active user on async-style updates. This keeps the app small and easy to follow versus Redux or server state libraries.
+- **State:** A single `InventoryProvider` holds React state (`useState`) for users, products, and transactions.
 
-- **Why Context:** Tabs need shared data without prop drilling; Context is sufficient at this scale. The trade-off is that any state change re-renders all consumers; for a larger catalog you would split contexts, memoize lists, or move to a store with selectors.
+- **Why Context:** The drawer screens share data without prop drilling; Context is sufficient at this scale.
 
 - **Styling:** NativeWind (`className`) keeps UI consistent with Tailwind-style tokens. Some React Native layout quirks still apply (e.g. keyboard avoidance, `ScrollView` vs `FlatList` for very long lists).
 

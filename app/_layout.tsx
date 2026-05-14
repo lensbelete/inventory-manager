@@ -1,26 +1,35 @@
 import { InventoryProvider } from '@/context/inventory-context';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DarkTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
 import 'react-native-reanimated';
-import "../global.css";
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import '../global.css';
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  anchor: '(drawer)',
+};
+
+const navigationTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: '#0a0e14',
+    card: '#121a24',
+    text: '#d0dae6',
+    border: '#243140',
+    primary: '#6b8496',
+  },
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <InventoryProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeProvider value={navigationTheme}>
         <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
         </Stack>
-        <StatusBar style="auto" />
+        <StatusBar style="light" />
       </ThemeProvider>
     </InventoryProvider>
   );
