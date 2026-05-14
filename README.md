@@ -26,24 +26,12 @@ Then press `i` for iOS simulator, `a` for Android emulator, or scan the QR code 
 
 Mutations use a short artificial delay to mimic async API calls while staying entirely on-device.
 
-## Approach and trade-offs
-
-- **State:** A single `InventoryProvider` holds React state (`useState`) for users, products, and transactions.
-
-- **Why Context:** The drawer screens share data without prop drilling; Context is sufficient at this scale.
-
-- **Styling:** NativeWind (`className`) keeps UI consistent with Tailwind-style tokens. Some React Native layout quirks still apply (e.g. keyboard avoidance, `ScrollView` vs `FlatList` for very long lists).
-
-- **Persistence:** Nothing is saved after reload. Adding `AsyncStorage` or SQLite would be the next step if data must survive restarts.
-
-- **Pagination:** History paging is client-side only (`slice` on the in-memory array). With a real API you would use cursor or offset parameters instead.
-
 ## Scripts
 
-| Command        | Description              |
-| -------------- | ------------------------ |
-| `npm start`    | Start Expo dev server    |
-| `npm run ios`  | Open iOS simulator       |
+| Command           | Description           |
+| ----------------- | --------------------- |
+| `npm start`       | Start Expo dev server |
+| `npm run ios`     | Open iOS simulator    |
 | `npm run android` | Open Android emulator |
-| `npm run web`  | Run in web browser       |
-| `npm run lint` | Run ESLint               |
+| `npm run web`     | Run in web browser    |
+| `npm run lint`    | Run ESLint            |
