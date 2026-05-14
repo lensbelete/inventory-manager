@@ -6,13 +6,13 @@ Small React Native demo that simulates **user registration**, **product catalog*
 
 ## Screenshots
 
-| | |
-|:---:|:---:|
-| ![](assets/screenshots/img1.jpg) | ![](assets/screenshots/img2.jpg) |
-| ![](assets/screenshots/img3.jpg) | ![](assets/screenshots/img4.jpg) |
-
-| ![](assets/screenshots/img5.jpg) |
-|:---:|
+<p align="center">
+  <img src="assets/screenshots/img1.jpg" alt="Screenshot 1" width="18%" />
+  <img src="assets/screenshots/img2.jpg" alt="Screenshot 2" width="18%" />
+  <img src="assets/screenshots/img3.jpg" alt="Screenshot 3" width="18%" />
+  <img src="assets/screenshots/img4.jpg" alt="Screenshot 4" width="18%" />
+  <img src="assets/screenshots/img5.jpg" alt="Screenshot 5" width="18%" />
+</p>
 
 ## Setup
 
