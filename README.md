@@ -1,50 +1,48 @@
-# Welcome to your Expo app 👋
+# Inventory manager (Expo + NativeWind)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Small React Native demo that simulates **user registration**, **product catalog**, **stock changes**, and a **paginated transaction history** using only in-memory state (no backend).
 
-## Get started
+**Repository:** [https://github.com/lensbelete/inventory-manager](https://github.com/lensbelete/inventory-manager)
 
-1. Install dependencies
+## Setup
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Requirements: Node.js (LTS recommended) and npm.
 
 ```bash
-npm run reset-project
+npm install
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Then press `i` for iOS simulator, `a` for Android emulator, or scan the QR code with Expo Go.
 
-## Learn more
+## What’s included
 
-To learn more about developing your project with Expo, look at the following resources:
+- **Users** — register email + full name; optionally choose an “active user” so stock events show who acted.
+- **Products** — register SKU, name, price, and initial quantity (SKU must be unique; validation on all fields).
+- **Stock** — add or remove quantity per product; removals are blocked if stock would go negative.
+- **Status** — each product shows SKU, quantity, and last updated time.
+- **History** — chronological list of changes with simple previous/next pagination.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Mutations use a short artificial delay to mimic async API calls while staying entirely on-device.
 
-## Join the community
+## Approach and trade-offs
 
-Join our community of developers creating universal apps.
+- **State:** A single `InventoryProvider` holds React state (`useState`) for users, products, and transactions. A `useRef` mirror of the user list avoids stale closures when labeling the active user on async-style updates. This keeps the app small and easy to follow versus Redux or server state libraries.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **Why Context:** Tabs need shared data without prop drilling; Context is sufficient at this scale. The trade-off is that any state change re-renders all consumers; for a larger catalog you would split contexts, memoize lists, or move to a store with selectors.
+
+- **Styling:** NativeWind (`className`) keeps UI consistent with Tailwind-style tokens. Some React Native layout quirks still apply (e.g. keyboard avoidance, `ScrollView` vs `FlatList` for very long lists).
+
+- **Persistence:** Nothing is saved after reload. Adding `AsyncStorage` or SQLite would be the next step if data must survive restarts.
+
+- **Pagination:** History paging is client-side only (`slice` on the in-memory array). With a real API you would use cursor or offset parameters instead.
+
+## Scripts
+
+| Command        | Description              |
+| -------------- | ------------------------ |
+| `npm start`    | Start Expo dev server    |
+| `npm run ios`  | Open iOS simulator       |
+| `npm run android` | Open Android emulator |
+| `npm run web`  | Run in web browser       |
+| `npm run lint` | Run ESLint               |
